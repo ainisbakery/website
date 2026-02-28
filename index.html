@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>aini’s bakery</title>
+
+<!-- italianno for logo / hero -->
+<link href="https://fonts.googleapis.com/css2?family=Italianno&display=swap" rel="stylesheet">
+
+<style>
+/* =========================
+   ROOT COLOURS
+========================= */
+:root {
+  --soft-pink: #f8b6c1;
+  --cream: #fff7ee;
+  --coffee: #6b4f4f;
+  --white: #ffffff;
+  --radius: 18px;
+}
+
+/* reset */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: Georgia, "Times New Roman", serif;
+  background: var(--cream);
+  color: var(--coffee);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* =========================
+   NAVBAR
+========================= */
+nav {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(6px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+nav .logo { font-family: 'Italianno', cursive; font-size:1.8rem; color: var(--coffee); }
+nav ul { display:flex; gap:2rem; list-style:none; }
+nav ul li a { text-decoration:none; color: var(--coffee); transition:0.2s; }
+nav ul li a:hover { color: var(--soft-pink); }
+
+/* =========================
+   SECTIONS
+========================= */
+.page { min-height: 100vh; padding: 7rem 1.5rem 4rem; }
+.container { max-width: 1100px; margin: auto; }
+h2 { text-align: center; margin-bottom: 2.5rem; }
+
+/* =========================
+   HERO
+========================= */
+#hero {
+  background:
+    linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.25)),
+    url("https://images.unsplash.com/photo-1541976076758-347942db1976");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hero-text { text-align: center; color: white; }
+.hero-text h1 { font-family: 'Italianno', cursive; font-size: 6rem; font-weight:normal; margin: -1rem; }
+.hero-text p { margin-top: 1rem; font-size: 1.5rem; }
+
+/* =========================
+   MENU GRID
+========================= */
+.menu-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(3, 1fr); /* keep the 3-column look you like */
+}
+
+/* optional: make it responsive on smaller screens */
+@media (max-width: 1024px) {
+  .menu-grid { grid-template-columns: repeat(2, 1fr); } /* 2 columns on medium screens */
+}
+@media (max-width: 700px) {
+  .menu-grid { grid-template-columns: 1fr; } /* stack on mobile */
+}
+
+.menu-item {
+  background: white;
+  padding: 1.5rem;
+  border-radius: var(--radius);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.menu-item h3 {
+  margin: 0 0 0px;
+  line-height: 1.2;
+}
+
+.menu-item p {
+  margin: 0 0 1px;
+  line-height: 0.9;
+}
+
+.menu-item sup {
+  margin: 0 0 1px;
+  line-height: 0.8;
+}
+
+.menu-item input, .menu-item select { padding: 0.4rem; border-radius: 8px; border: 1px solid #ddd; }
+.checkbox-group { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 0.5rem; }
+.checkbox-group label { display: flex; align-items: center; gap: 0.3rem; font-size: 0.95rem; cursor: pointer; }
+
+/* =========================
+   BUTTONS
+========================= */
+button { margin-top: 0.8rem; padding: 0.6rem; border-radius: 999px; border: none; background: var(--soft-pink); color: white; cursor: pointer; }
+button:hover { opacity: 0.85; }
+
+/* =========================
+   CHECKOUT BUTTON FULL WIDTH
+========================= */
+#checkout-btn { display:block; width: 100%; margin: 1.5rem 0; padding: 0.8rem; font-size: 1.1rem; border-radius: var(--radius); }
+
+/* =========================
+   LEFT/RIGHT IMAGE SECTIONS
+========================= */
+.split { display: grid; gap: 2rem; margin-bottom: 4rem; }
+@media (min-width: 800px) { .split { grid-template-columns: 1fr 1fr; align-items: center; } }
+.split.reverse { direction: rtl; }
+.split.reverse * { direction: ltr; }
+.image-frame { width: 100%; height: 300px; border-radius: 150px 150px 20px 20px; overflow: hidden; }
+.image-frame img { width: 100%; height: 100%; object-fit: cover; }
+
+/* =========================
+   STORY CARDS
+========================= */
+.story-page { background: white; padding: 1.5rem; border-radius: var(--radius); margin-bottom: 2rem; }
+
+/* =========================
+   CONTACT
+========================= */
+footer { background: white; padding: 3rem 1.5rem; text-align: center; }
+
+/* =========================
+   COMMENTS
+========================= */
+.comment-box { background: white; padding: 1rem; border-radius: var(--radius); margin-bottom: 1rem; cursor: pointer; }
+
+/* =========================
+   CART PANEL
+========================= */
+.cart-panel {
+  position: fixed; top:0; right:-420px; width:400px; height:100%; background:white;
+  box-shadow:-5px 0 15px rgba(0,0,0,0.2); z-index: 2000; padding:2rem; overflow-y:auto; transition:right 0.3s ease;
+}
+body.show-cart .cart-panel { right:0; }
+body.show-cart .menu-grid, body.show-cart .hero, body.show-cart .split, body.show-cart .story-page { transform: scale(0.95); opacity:0.7; transition: transform 0.3s ease, opacity 0.3s ease; }
+.cart-panel h2 { margin-bottom: 1rem; }
+.cart-item { border-bottom:1px solid #eee; padding-bottom:0.5rem; margin-bottom:0.5rem; }
+.cart-item label { font-size:0.9rem; }
+.cart-item input, .cart-item select { margin: 0.3rem 0; width:100%; }
+.remove-btn { background:#6b4f4f; margin-top:0.3rem; }
+.remove-btn:hover { background:#543c3c; }
+#cart-checkout-btn { display:block; width:100%; margin-top:1rem; border-radius:16px; }
+
+/* ===== MOBILE NAVBAR FIX ===== */
+@media (max-width: 768px) {
+
+  nav {
+    flex-direction: column; /* stack instead of side-by-side */
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.6rem 1rem;
+  }
+
+  .logo {
+    font-size: 1.8rem;
+    margin-bottom: 0rem;
+  }
+
+  .nav-links {
+    display: flex;
+    flex-wrap: wrap; /* allows wrapping instead of overlapping */
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .nav-links a {
+    font-size: 0.85rem;
+    padding: 0.3rem 0.6rem;
+  }
+}
+
+@media (max-width: 768px) {
+  nav ul {
+    flex-wrap: wrap;       /* allows links to go to next line if needed */
+    gap: 0.5rem;           /* reduce space between links */
+    justify-content: center; /* center them */
+  }
+
+  @media nav ul li a {
+    font-size: 0.85rem;    /* slightly smaller text for mobile */
+    padding: 0.3rem 0.5rem; /* smaller padding so links aren’t too far apart */
+  }
+}
+
+@media (max-width: 700px) {
+  .hero-text h1 {
+    font-size: 3rem; /* smaller on phones */
+    font-weight: normal;
+    margin-bottom: -1rem;
+  }
+}
+
+@media (max-width: 700px) {
+  .hero-text p {
+    font-size: 1rem; /* smaller on phones */
+    font-weight: normal;
+  }
+}
+
+/* =========================
+   IMPORTANT NOTE POPUP
+========================= */
+.note-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.note-box {
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  max-width: 320px;
+  width: 90%;
+  text-align: center;
+  position: relative;
+}
+
+.note-box h2 {
+  margin-bottom: 0.5rem;
+}
+
+.note-box p {
+  line-height: 1.5;
+}
+
+.note-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  background: #eee;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.note-close:hover {
+  background: #ddd;
+}
+
+/* =========================
+   COMING SOON OVERLAY
+========================= */
+
+.coming-soon {
+  position: relative;
+  pointer-events: none; /* disables clicking */
+}
+
+/* blurred overlay */
+.coming-soon::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(3px);
+  z-index: 1;
+}
+
+/* text overlay (NOT blurred) */
+.coming-soon::after {
+  content: "coming soon, stay tuned ✨";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #444;
+  letter-spacing: 0.5px;
+  z-index: 2;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- IMPORTANT NOTE POPUP -->
+<div id="important-note" class="note-overlay">
+  <div class="note-box">
+    <button class="note-close" onclick="closeNote()">✕</button>
+    <h2>important note!</h2>
+    <p>all items are available for <strong>pickup only</strong>.</p>
+    <p>thank you 💗</p>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="logo">aini’s bakery</div>
+  <ul>
+    <li><a href="#hero">home</a></li>
+    <li><a href="#menu">menu</a></li>
+    <li><a href="#combos">combos</a></li>
+    <li><a href="#events">events</a></li>
+    <li><a href="#story">our story</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero" class="page">
+  <div class="hero-text">
+    <h1>aini’s bakery</h1>
+    <p>soft cookies, comfort bakes & handmade treats</p>
+  </div>
+</section>
+
+<!-- MENU -->
+<section id="menu" class="page">
+  <div class="container">
+    <h2>menu</h2>
+<div class="menu-grid">
+  <div class="menu-item">
+    <h3>s’mores soft cookies</h3>
+    <select>
+      <option>chocolate chip — rm8</option>
+      <option>matcha — rm8</option>
+      <option>pistachio — rm8</option>
+      <option>biscoff — rm10</option>
+    </select>
+    <input type="number" value="1">
+    <button>add to cart</button>
+  </div>
+
+  <div class="menu-item">
+    <h3>mini chocolate chip cookies</h3>
+    <select>
+      <option>small — rm5</option>
+      <option>big — rm20</option>
+    </select>
+    <input type="number" value="1">
+    <button>add to cart</button>
+  </div>
+
+  <div class="menu-item cheesetarts">
+    <h3>cheesetarts</h3>
+    <div class="checkbox-group">
+      <label><input type="checkbox" value="raspberry"> raspberry</label>
+      <label><input type="checkbox" value="blueberry"> blueberry</label>
+      <label><input type="checkbox" value="biscoff"> biscoff</label>
+    </div>
+    <input type="number" value="1">
+    <button class="cheesetart-btn">add to cart</button>
+  </div>
+
+  <div class="menu-item">
+    <h3>shepherd’s pie</h3>
+    <sup>per box</sup>
+    <p>rm25</p>
+    <input type="number" value="1">
+    <button>add to cart</button>
+  </div>
+
+  <div class="menu-item">
+    <h3>cheesekut</h3>
+    <p>rm30</p>
+    <select>
+      <option>blueberry</option>
+      <option>tiramisu</option>
+      <option>oreo</option>
+    </select>
+    <input type="number" value="1">
+    <button>add to cart</button>
+  </div>
+
+  <div class="menu-item">
+    <h3>kek gula hangus</h3>
+    <sup>(kek sarang semut)</sup>
+    <p>rm40</p>
+    <input type="number" value="1">
+    <button>add to cart</button>
+  </div>
+
+  <div class="menu-item">
+    <h3>peach strudel</h3> <sup>16pcs</sup>
+    <p>rm35</p>
+    <input type="number" value="1">
+    <button>add to cart</button>
+  </div>
+
+  <div class="menu-item">
+    <h3>kek batik</h3>
+    <sup>25pcs , uses Van Houten chocolate</sup>
+    <select>
+      <option>normal — rm30</option>
+      <option>mixed — rm40</option>
+      <option>magnum — rm50</option>
+    </select>
+    <input type="number" value="1">
+    <button>add to cart</button>
+  </div>
+
+  <div class="menu-item">
+    <h3>caramel pudding</h3> <sup>1 quantity = 10pcs</sup>
+    <p>rm25</p>
+    <input type="number" value="1">
+    <button>add to cart</button>
+  </div>
+
+</div> <!-- end of menu-grid -->
+
+
+    <!-- FULL-WIDTH CHECKOUT BUTTON -->
+    <button id="checkout-btn">checkout</button>
+  </div>
+</section>
+
+<!-- COMBOS -->
+<section id="combos" class="page coming-soon">
+  <div class="container">
+    <h2>combos</h2>
+    <div class="split">
+      <div class="image-frame">
+        <img src="https://en.photo-ac.com/photo/27376954/plain-white-background">
+      </div>
+      <div>
+        <h3>bestie box</h3>
+        <p>a mix of our best-selling cookies, perfect for sharing or gifting.</p>
+      </div>
+    </div>
+    <div class="split reverse">
+      <div class="image-frame">
+        <img src="https://en.photo-ac.com/photo/27376954/plain-white-background">
+      </div>
+      <div>
+        <h3>comfort combo</h3>
+        <p>soft cookies + savoury bakes for cosy nights in.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EVENTS -->
+<section id="events" class="page coming-soon">
+  <div class="container">
+    <h2>events</h2>
+    <div class="split">
+      <div class="image-frame">
+        <img src="https://en.photo-ac.com/photo/27376954/plain-white-background">
+      </div>
+      <div>
+        <h3>wedding doorgifts</h3>
+        <p>custom-packaged treats for weddings, nikah & receptions.</p>
+      </div>
+    </div>
+    <div class="split reverse">
+      <div class="image-frame">
+        <img src="https://en.photo-ac.com/photo/27376954/plain-white-background">
+      </div>
+      <div>
+        <h3>event snacks</h3>
+        <p>perfect for birthdays, school events & celebrations.</p>
+      </div>
+    </div>
+    <div class="split">
+      <div class="image-frame">
+        <img src="https://en.photo-ac.com/photo/27376954/plain-white-background">
+      </div>
+      <div>
+        <h3>stock our bakes</h3>
+        <p>interested in selling our items at your store? let’s collaborate.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STORY -->
+<section id="story" class="page coming-soon">
+  <div class="container">
+    <h2>our story</h2>
+    <div class="story-page"><p>aini’s bakery started as a small kitchen experiment, baking for family and friends.</p></div>
+    <div class="story-page"><p>every order taught us something new — patience, consistency, and love.</p></div>
+    <div class="story-page"><p>now, we’re growing slowly, dreaming bigger, and baking better every day.</p></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<footer>
+  <p>📍 based in malaysia</p>
+  <p>📞 whatsapp: 011-37614341</p>
+  <p>💌 instagram: @ainisbakery</p>
+</footer>
+
+<!-- =========================
+     CART PANEL
+========================= -->
+<div class="cart-panel">
+  <button id="close-cart" style="position:absolute;top:10px;right:10px;background:var(--soft-pink);color:white;border:none;border-radius:50%;width:30px;height:30px;cursor:pointer;font-weight:bold;font-size:1rem;">X</button>
+  <h2>your cart</h2>
+  <div id="cart-items"></div>
+<p id="cart-total" style="font-weight: bold; margin-top: 1rem;">
+  total: RM0
+</p>
+  <button id="cart-checkout-btn">send to WhatsApp</button>
+</div>
+
+<script>
+const whatsappNumber = "01137614341";
+let cart = [];
+
+/* add generic item */
+document.querySelectorAll('.menu-item button:not(.cheesetart-btn)').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const parent = btn.parentElement;
+    const name = parent.querySelector('h3').innerText;
+    let flavour='', price=0;
+    const select = parent.querySelector('select');
+    if(select){ flavour = select.value; price = parseInt(select.value.match(/\d+/)); }
+if(select){
+  flavour = select.value;
+  // check if option has a number
+  const match = select.value.match(/\d+/);
+  if(match) price = parseInt(match[0]);
+  else if(name.toLowerCase().includes('cheesekut')) price = 30;
+}
+    else if(name.toLowerCase().includes('shepherd')) price=25;
+    else if(name.toLowerCase().includes('kek gula hangus')) price=40;
+    else if(name.toLowerCase().includes('cookies')) price=8;
+    else if(name.toLowerCase().includes('peach')) price=35;
+    else if(name.toLowerCase().includes('caramel')) price=25;
+    const qty = parseInt(parent.querySelector('input').value);
+const existing = cart.find(
+  item => item.name === name && item.flavour === flavour
+);
+
+if (existing) {
+  existing.qty += qty;
+} else {
+const existing = cart.find(item =>
+  item.name === name && item.flavour === flavour
+);
+
+if (existing) {
+  existing.qty += qty;
+} else {
+  cart.push({ name, flavour, price, qty });
+}
+
+}
+
+renderCart();
+    alert(`${name} ${flavour?('('+flavour+')'):""} x${qty} added to cart!`);
+    renderCart();
+  });
+});
+
+function calculateTotal() {
+  return cart.reduce((sum, item) => {
+    return sum + item.price * item.qty;
+  }, 0);
+}
+
+
+// cheesetarts logic
+document.querySelector('.cheesetart-btn').addEventListener('click', ()=>{
+  const parent = document.querySelector('.cheesetarts');
+  const checked = parent.querySelectorAll('input[type="checkbox"]:checked');
+
+  if (checked.length === 0) {
+    alert("please choose at least one cheesetart flavour!");
+    return;
+  }
+
+  const flavours = Array.from(checked).map(cb => cb.value);
+  const qty = parseInt(parent.querySelector('input[type="number"]').value);
+
+let price = 40; // default
+
+const hasBiscoff = flavours.includes("biscoff");
+const flavourCount = flavours.length;
+
+if (hasBiscoff && flavourCount === 1) {
+  // biscoff only
+  price = 50;
+} else if (hasBiscoff && flavourCount > 1) {
+  // mixed normal + biscoff
+  price = 45;
+} else {
+  // one flavour OR mixed normal only
+  price = 40;
+}
+
+const flavourText = flavours.join(", ");
+
+const existing = cart.find(
+  item => item.name === "cheesetarts" && item.flavour === flavourText
+);
+
+if (existing) {
+  existing.qty += qty;
+} else {
+  cart.push({
+    name: "cheesetarts",
+    flavour: flavourText,
+    price: price,
+    qty: qty
+  });
+}
+
+renderCart();
+
+  alert(`cheesetarts (${flavours.join(", ")}) x${qty} added to cart!`);
+  renderCart();
+});
+
+
+/* render cart panel */
+function renderCart() {
+  const cartDiv = document.getElementById('cart-items');
+  const totalDiv = document.getElementById('cart-total');
+
+  cartDiv.innerHTML = '';
+  let total = 0;
+
+  cart.forEach((item, index) => {
+    total += item.price * item.qty;
+
+    const div = document.createElement('div');
+    div.className = 'cart-item';
+
+    const flavourHTML = item.flavour
+      ? `<p class="cart-flavour">flavour: ${item.flavour}</p>`
+      : '';
+
+    div.innerHTML = `
+      <strong>${item.name}</strong>
+      ${flavourHTML}
+      <label>quantity:</label>
+      <input type="number" min="1" value="${item.qty}" class="cart-qty">
+      <p>RM${item.price} each</p>
+      <button class="remove-btn">remove</button>
+    `;
+
+    /* quantity change */
+    div.querySelector('.cart-qty').addEventListener('change', (e) => {
+      const newQty = Math.max(1, parseInt(e.target.value) || 1);
+      cart[index].qty = newQty;
+      renderCart();
+    });
+
+    /* remove button */
+    div.querySelector('.remove-btn').addEventListener('click', () => {
+      cart.splice(index, 1);
+      renderCart();
+    });
+
+    cartDiv.appendChild(div);
+  });
+
+  totalDiv.innerText = `total: RM${total}`;
+}
+
+
+/* toggle cart panel */
+document.getElementById('checkout-btn').addEventListener('click', ()=>{ document.body.classList.toggle('show-cart'); });
+document.getElementById('close-cart').addEventListener('click', ()=>{ document.body.classList.remove('show-cart'); });
+
+/* send to whatsapp */
+document.getElementById('cart-checkout-btn').addEventListener('click', ()=>{
+  if(cart.length===0){ alert("your cart is empty!"); return; }
+  let msg="hello! here is my order:%0A";
+  cart.forEach(item=>{ msg+=`${item.name} — ${item.flavour?item.flavour:""} x${item.qty} — RM${item.price*item.qty}%0A`; });
+  msg+="thank you!";
+  window.open(`https://wa.me/${whatsappNumber}?text=${msg}`,"_blank");
+});
+
+function closeNote() {
+  const now = new Date().getTime();
+  localStorage.setItem('noteLastSeen', now);
+  document.getElementById('important-note').style.display = 'none';
+}
+
+(function checkNote() {
+  const note = document.getElementById('important-note');
+  const lastSeen = localStorage.getItem('noteLastSeen');
+
+  if (!lastSeen) {
+    // never seen before → show popup
+    note.style.display = 'flex';
+    return;
+  }
+
+  const now = new Date().getTime();
+  const oneMonth = 30 * 24 * 60 * 60 * 1000; // 30 days
+
+  if (now - lastSeen > oneMonth) {
+    // more than a month → show again
+    note.style.display = 'flex';
+  } else {
+    // recently seen → hide
+    note.style.display = 'none';
+  }
+})();
+
+
+</script>
+
+</body>
+</html>
+
