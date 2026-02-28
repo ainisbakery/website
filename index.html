@@ -318,6 +318,51 @@ body.show-cart .menu-grid, body.show-cart .hero, body.show-cart .split, body.sho
   z-index: 2;
 }
 
+   /* IMPORTANT NOTE OVERLAY */
+.note-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+
+  opacity: 1;
+  transition: opacity 0.35s ease;
+}
+
+.note-box {
+  background: white;
+  padding: 1.8rem;
+  border-radius: 16px;
+  max-width: 320px;
+  text-align: center;
+  position: relative;
+
+  transform: translateY(0);
+  transition: transform 0.35s ease;
+}
+
+/* closing animation */
+.note-overlay.closing {
+  opacity: 0;
+}
+
+.note-overlay.closing .note-box {
+  transform: translateY(30px);
+}
+
+.note-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  border: none;
+  background: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+   
 </style>
 </head>
 
@@ -526,7 +571,7 @@ body.show-cart .menu-grid, body.show-cart .hero, body.show-cart .split, body.sho
 <footer>
   <p>📍 based in malaysia</p>
   <p>📞 whatsapp: 011-37614341</p>
-  <p>💌 instagram: @ainisbakery</p>
+  <p>💌 instagram: @ainisbakeryyy</p>
 </footer>
 
 <!-- =========================
@@ -712,38 +757,31 @@ document.getElementById('cart-checkout-btn').addEventListener('click', ()=>{
   window.open(`https://wa.me/${whatsappNumber}?text=${msg}`,"_blank");
 });
 
-function closeNote() {
-  const now = new Date().getTime();
-  localStorage.setItem('noteLastSeen', now);
-  document.getElementById('important-note').style.display = 'none';
+   const note = document.getElementById("important-note");
+const LAST_SEEN_KEY = "noteLastSeen";
+const ONE_MONTH = 30 * 24 * 60 * 60 * 1000;
+
+// check if should show
+const lastSeen = localStorage.getItem(LAST_SEEN_KEY);
+
+if (lastSeen && Date.now() - lastSeen < ONE_MONTH) {
+  note.style.display = "none";
 }
 
-(function checkNote() {
-  const note = document.getElementById('important-note');
-  const lastSeen = localStorage.getItem('noteLastSeen');
+function closeNote() {
+  note.classList.add("closing");
 
-  if (!lastSeen) {
-    // never seen before → show popup
-    note.style.display = 'flex';
-    return;
-  }
-
-  const now = new Date().getTime();
-  const oneMonth = 30 * 24 * 60 * 60 * 1000; // 30 days
-
-  if (now - lastSeen > oneMonth) {
-    // more than a month → show again
-    note.style.display = 'flex';
-  } else {
-    // recently seen → hide
-    note.style.display = 'none';
-  }
-})();
+  setTimeout(() => {
+    note.style.display = "none";
+    localStorage.setItem(LAST_SEEN_KEY, Date.now());
+  }, 350); // MUST match CSS transition time
+}
 
 
 </script>
 
 </body>
 </html>
+
 
 
