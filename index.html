@@ -69,21 +69,44 @@ nav ul li a:hover { color: var(--soft-pink); }
 h2 { text-align: center; margin-bottom: 2.5rem; }
 
 /* =========================
-   HERO
+   HERO (FULL REPLACEMENT)
 ========================= */
 #hero {
-  background:
-    linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.25)),
-    url("https://images.unsplash.com/photo-1541976076758-347942db1976");
+  /* This creates the smooth 'flow' from the image into your cream background */
+  background: 
+    linear-gradient(
+      to bottom, 
+      rgba(255, 247, 238, 0) 0%,    /* Transparent at top (shows lace) */
+      rgba(255, 247, 238, 0.4) 80%,   /* Start of the soft blur */
+      rgba(255, 247, 238, 1) 100%     /* Solid Cream at bottom (matches page) */
+    ),
+    url("https://i.pinimg.com/1200x/3f/58/de/3f58deb158cfac563f7c36805a73e3d2.jpg");
+  
   background-size: cover;
-  background-position: center;
+  background-position: center top; 
+  min-height: 90vh; /* Keeps the hero tall and elegant */
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.hero-text { text-align: center; color: white; }
-.hero-text h1 { font-family: 'Italianno', cursive; font-size: 6rem; font-weight:normal; margin: -1rem; }
-.hero-text p { margin-top: 1rem; font-size: 1.5rem; }
+
+.hero-text { 
+  text-align: center; 
+  color: var(--coffee); 
+}
+
+.hero-text h1 { 
+  font-family: 'Italianno', cursive; 
+  font-size: 6rem; 
+  font-weight: normal; 
+  margin: -1rem; 
+}
+
+.hero-text p { 
+  margin-top: 1rem; 
+  font-size: 1.5rem; 
+  text-shadow: 2px 2px 4px rgba(107, 79, 79, 0.2); 
+}
 
 /* =========================
    MENU GRID
@@ -368,6 +391,76 @@ body.show-cart .menu-grid, body.show-cart .hero, body.show-cart .split, body.sho
   background: none;
   font-size: 1.2rem;
   cursor: pointer;
+}
+
+
+input[type="checkbox"] {
+  /* Step 1: Remove the default blue appearance */
+  appearance: none;
+  -webkit-appearance: none;
+  
+  /* Step 2: Set your coffee background & size */
+  width: 22px;
+  height: 22px;
+  background-color: var(--white); /* Unchecked state matches background */
+  border: 2px solid var(--coffee);
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-grid;
+  place-content: center;
+  transition: background-color 0.2s ease;
+}
+
+input[type="checkbox"]:checked {
+  /* Step 3: Change to coffee color when checked */
+  background-color: var(--coffee);
+}
+
+input[type="checkbox"]::before {
+  /* Step 4: Create the white 'tick' using a Unicode character */
+  content: "\2713"; /* Checkmark symbol */
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  color: var(--white);
+  font-weight: bold;
+}
+
+input[type="checkbox"]:checked::before {
+  /* Step 5: Show the tick when checked */
+  transform: scale(1);
+}
+
+/* The main dropdown box */
+select {
+  appearance: none;
+  background-color: var(--white);
+  color: var(--coffee);
+  border: 2px solid var(--coffee);
+  padding: 10px 35px 10px 15px; /* Extra right padding for a custom arrow */
+  border-radius: var(--radius);
+  font-family: inherit;
+  cursor: pointer;
+  outline: none;
+  /* Custom arrow icon since we removed the default one */
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%236b4f4f%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+  background-repeat: no-repeat;
+  background-position: right 15px top 50%;
+  background-size: 12px auto;
+}
+
+/* The individual items in the list */
+select option {
+  background-color: var(--white);
+  color: var(--coffee);
+}
+
+/* Styling the 'highlight' color (Desktop Chrome/Android) */
+select option:checked,
+select option:hover {
+  background-color: var(--soft-pink) !important;
+  color: var(--coffee) !important;
+  /* Note: Some browsers only allow system colors here, 
+     but this works for most modern Android/Chrome setups */
 }
    
 </style>
@@ -790,6 +883,7 @@ function closeNote() {
 
 </body>
 </html>
+
 
 
 
