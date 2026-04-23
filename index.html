@@ -297,22 +297,40 @@ body.show-cart .menu-grid, body.show-cart .hero, body.show-cart .split, body.sho
 
 .note-close {
   position: absolute;
-  top: 12px;
-  right: 14px;
-  background: #ebbebe;
+  top: -10px;
+  right: -10px;
+
+  width: 40px;
+  height: 40px;
+
+  background: var(--soft-pink);
+  color: white;
+
   border: none;
   border-radius: 50%;
-  width: 32px;
-  height: 32px;
-  font-size: 1.2rem;
-  cursor: pointer;
+
+  font-size: 1.4rem;
+  font-weight: bold;
+
   display: flex;
   align-items: center;
   justify-content: center;
-}
 
+  cursor: pointer;
+  z-index: 10;
+
+  box-shadow: 0 6px 12px rgba(0,0,0,0.25);
+}
 .note-close:hover {
   background: #ddd;
+}
+
+   @media (max-width: 600px) {
+  .note-close {
+    width: 44px;
+    height: 44px;
+    font-size: 1.6rem;
+  }
 }
 
 /* =========================
