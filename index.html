@@ -299,7 +299,7 @@ body.show-cart .menu-grid, body.show-cart .hero, body.show-cart .split, body.sho
   position: absolute;
   top: 12px;
   right: 14px;
-  background: #eee;
+  background: #ebbebe;
   border: none;
   border-radius: 50%;
   width: 32px;
@@ -872,7 +872,12 @@ if (lastSeen && Date.now() - lastSeen < ONE_MONTH) {
 
 function closeNote() {
   note.classList.add("closing");
-
+   // click anywhere outside the box to close
+document.getElementById("important-note").addEventListener("click", function(e) {
+  if (e.target.id === "important-note") {
+    closeNote();
+  }
+});
   setTimeout(() => {
     note.style.display = "none";
     localStorage.setItem(LAST_SEEN_KEY, Date.now());
